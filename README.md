@@ -16,7 +16,7 @@
 * `/front` → Sitio web (HTML, CSS, JS)
 * `/routes` → Definición de rutas
 * `/controllers` → Lógica de negocio
-* `index.mjs` → Configuración del servidor
+* `main.mjs` → Configuración del servidor
 
 ---
 
