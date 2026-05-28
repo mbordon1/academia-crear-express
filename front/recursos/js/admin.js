@@ -16,7 +16,7 @@ async function cargar() {
     const tbody  = $('tabla')
 
     if (!clases.length) {
-      tbody.innerHTML = '<tr><td colspan="6" class="tabla-vacia">No hay clases cargadas.</td></tr>'
+      tbody.innerHTML = '<tr><td colspan="5" class="tabla-vacia">No hay clases cargadas.</td></tr>'
       return
     }
 

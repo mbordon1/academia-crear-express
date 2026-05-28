@@ -45,7 +45,11 @@ export async function actualizarClase(req, res) {
       return res.status(404).json({ error: `No se encontro la clase con id ${req.params.id}` })
     }
     const { nombre, descripcion, nivel } = req.body
-    const actualizado = await ClasesModelo.actualizarClase(req.params.id, { nombre, descripcion, nivel })
+    const actualizado = await ClasesModelo.actualizarClase(req.params.id, {
+      nombre:      nombre      !== undefined ? nombre      : existe.nombre,
+      descripcion: descripcion !== undefined ? descripcion : existe.descripcion,
+      nivel:       nivel       !== undefined ? nivel       : existe.nivel,
+    })
     res.json(actualizado)
   } catch (error) {
     res.status(500).json({ error: error.message })

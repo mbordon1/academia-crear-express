@@ -12,11 +12,3 @@ if (spanAnio) {
   spanAnio.textContent = añoActual;
 }
 
-const form = document.querySelector("form");
-if (form) {
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-    alert("¡Gracias por contactarte! Nos comunicaremos pronto.");
-    form.reset();
-  });
-}
