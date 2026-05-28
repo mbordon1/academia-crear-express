@@ -7,6 +7,7 @@ export async function obtenerClases(req, res) {
     res.json(clases)
   } catch (error) {
     res.status(500).json({ error: error.message })
+    console.error('ERROR CLASES:', error)
   }
 }
 
