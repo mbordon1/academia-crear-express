@@ -13,9 +13,13 @@ export async function obtenerClases(req, res) {
 // LECTURA 2 — GET /api/clases/:id
 export async function obtenerClasePorId(req, res) {
   try {
-    const clase = await ClasesModelo.obtenerPorId(req.params.id)
+    const id = parseInt(req.params.id)
+    if (isNaN(id)) {
+      return res.status(400).json({ error: 'El id debe ser un número entero' })
+    }
+    const clase = await ClasesModelo.obtenerPorId(id)
     if (!clase) {
-      return res.status(404).json({ error: `No se encontro la clase con id ${req.params.id}` })
+      return res.status(404).json({ error: `No se encontro la clase con id ${id}` })
     }
     res.json(clase)
   } catch (error) {
@@ -24,7 +28,7 @@ export async function obtenerClasePorId(req, res) {
 }
 
 // ALTA — POST /api/clases
-export async function crearClase (req, res) {
+export async function crearClase(req, res) {
   try {
     const { nombre, descripcion, nivel } = req.body
     if (!nombre) {
@@ -40,12 +44,20 @@ export async function crearClase (req, res) {
 // MODIFICACION — PUT /api/clases/:id
 export async function actualizarClase(req, res) {
   try {
-    const existe = await ClasesModelo.obtenerPorId(req.params.id)
+    const id = parseInt(req.params.id)
+    if (isNaN(id)) {
+      return res.status(400).json({ error: 'El id debe ser un número entero' })
+    }
+    const existe = await ClasesModelo.obtenerPorId(id)
     if (!existe) {
-      return res.status(404).json({ error: `No se encontro la clase con id ${req.params.id}` })
+      return res.status(404).json({ error: `No se encontro la clase con id ${id}` })
     }
     const { nombre, descripcion, nivel } = req.body
-    const actualizado = await ClasesModelo.actualizarClase(req.params.id, { nombre, descripcion, nivel })
+    const actualizado = await ClasesModelo.actualizarClase(id, {
+      nombre: nombre !== undefined ? nombre : existe.nombre,
+      descripcion: descripcion !== undefined ? descripcion : existe.descripcion,
+      nivel: nivel !== undefined ? nivel : existe.nivel,
+    })
     res.json(actualizado)
   } catch (error) {
     res.status(500).json({ error: error.message })
@@ -65,10 +77,15 @@ export async function obtenerClasesPorNivel(req, res) {
 // BAJA — DELETE /api/clases/:id
 export async function eliminarClase(req, res) {
   try {
-    const eliminado = await ClasesModelo.eliminarClase(req.params.id)
-    if (!eliminado) {
-      return res.status(404).json({ error: `No se encontro la clase con id ${req.params.id}` })
+    const id = parseInt(req.params.id)
+    if (isNaN(id)) {
+      return res.status(400).json({ error: 'El id debe ser un número entero' })
     }
+    const clase = await ClasesModelo.obtenerPorId(id)
+    if (!clase) {
+      return res.status(404).json({ error: `No se encontro la clase con id ${id}` })
+    }
+    const eliminado = await ClasesModelo.eliminarClase(id)
     res.json({ mensaje: 'Clase eliminada correctamente', clase: eliminado })
   } catch (error) {
     res.status(500).json({ error: error.message })
